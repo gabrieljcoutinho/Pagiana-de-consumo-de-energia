@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerenciamento de Energia</title>
+
+  <link rel="stylesheet" href="./css/index.css">
+
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Gerenciamento de Energia</h1>
+
+    <div class="grid">
+      <div>
+        <h2>Cadastrar Dispositivo</h2>
+        <form id="formDispositivo">
+          <input type="text" id="nomeDispositivo" placeholder="Nome do dispositivo" required />
+          <input type="number" id="importanciaDispositivo" placeholder="Importância (1-3)" required min="1" max="3" />
+          <input type="number" id="consumoDispositivo" placeholder="Consumo (kWh)" required step="0.01" min="0" />
+          <button type="submit" class="blue-btn">Adicionar Dispositivo</button>
+        </form>
+      </div>
+    </div>
+
+    <h2>Dispositivos Cadastrados</h2>
+    <ul id="listaDispositivos" class="device-list">
+      <li style="padding: 12px; color: #6c757d;">Nenhum dispositivo cadastrado</li>
+    </ul>
+
+    <h2>Status de Energia</h2>
+    <div id="statusConsumo"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("formDispositivo");
+    const lista = document.getElementById("listaDispositivos");
+    const statusConsumo = document.getElementById("statusConsumo");
+
+    let dispositivos = [];
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const nome = document.getElementById("nomeDispositivo").value.trim();
+      const importancia = document.getElementById("importanciaDispositivo").value.trim();
+      const consumo = document.getElementById("consumoDispositivo").value.trim();
+
+      if (!nome || importancia === "" || consumo === "") return;
+
+      // Impede o cadastro de importância 0 e avisa o usuário.
+      if (parseInt(importancia) === 0) {
+        alert("O nível de importância deve ser 1, 2 ou 3.");
+        return;
+      }
+
+      const dispositivo = {
+        id: Date.now(),
+        nome,
+        importancia: parseInt(importancia), // Garante que a importância seja um número
+        consumo: parseFloat(consumo)
+      };
+
+      dispositivos.push(dispositivo);
+      atualizarLista();
+      atualizarConsumoTotal();
+      form.reset();
+    });
+
+    function atualizarLista() {
+      lista.innerHTML = "";
+
+      if (dispositivos.length === 0) {
+        lista.innerHTML = `<li style="padding: 12px; color: #6c757d;">Nenhum dispositivo cadastrado</li>`;
+        return;
+      }
+
+      // Ordena os dispositivos por importância (do menor para o maior)
+      dispositivos.sort((a, b) => a.importancia - b.importancia);
+
+      dispositivos.forEach(d => {
+        const li = document.createElement("li");
+        li.className = "device-item";
+        li.innerHTML = `
+          <div class="device-info">
+            <strong>${d.nome}</strong><br>
+            Importância: ${d.importancia} | Consumo: ${d.consumo} kWh
+          </div>
+          <button class="delete-btn" onclick="removerDispositivo(${d.id})">Deletar</button>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    function removerDispositivo(id) {
+      dispositivos = dispositivos.filter(d => d.id !== id);
+      atualizarLista();
+      atualizarConsumoTotal();
+    }
+
+    function atualizarConsumoTotal() {
+      if (dispositivos.length === 0) {
+        statusConsumo.textContent = "";
+        return;
+      }
+
+      const totalConsumo = dispositivos.reduce((acc, d) => acc + d.consumo, 0);
+      statusConsumo.textContent = `Consumo total dos dispositivos conectados: ${totalConsumo.toFixed(2)} kWh`;
+    }
+  </script>
+</body>
+</html>

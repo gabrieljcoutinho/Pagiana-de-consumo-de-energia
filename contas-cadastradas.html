@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contas Cadastradas</title>
+
+<link rel="stylesheet" href="./css/contasCriadas.css">
+
+</head>
+<body>
+    <h2>Contas Cadastradas</h2>
+    <div id="listaContas"></div>
+
+    <script>
+        function carregarContas() {
+            const contas = JSON.parse(localStorage.getItem('contas')) || [];
+            const container = document.getElementById('listaContas');
+            container.innerHTML = '';
+
+            if (contas.length === 0) {
+                container.innerHTML = "<p>Nenhuma conta cadastrada ainda.</p>";
+                return;
+            }
+
+            contas.forEach((conta, index) => {
+                const div = document.createElement('div');
+                div.className = "conta";
+                div.innerHTML = `
+                    <strong>Nome:</strong> ${conta.nome}<br>
+                    <strong>Email:</strong> ${conta.email}<br>
+                    <strong>Senha:</strong> ${conta.senha}
+                    <button class="btn-excluir" onclick="excluirConta(${index})">Excluir</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function excluirConta(index) {
+            let contas = JSON.parse(localStorage.getItem('contas')) || [];
+            contas.splice(index, 1);
+            localStorage.setItem('contas', JSON.stringify(contas));
+            carregarContas();
+        }
+
+        carregarContas();
+    </script>
+</body>
+</html>

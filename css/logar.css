@@ -1,0 +1,73 @@
+/*
+ * Google Fonts: Importando uma fonte mais moderna
+ * Para este exemplo, usaremos 'Poppins'
+ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Usando a nova fonte */
+    background-color: #e9f3ff;
+    /* Fundo azul claro e suave */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #ffffff;
+    padding: 50px 40px;
+    border-radius: 15px;
+    /* Bordas mais arredondadas */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /* Sombra mais suave */
+    width: 380px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito sutil ao passar o mouse */
+.login-container:hover {
+    transform: translateY(-5px);
+}
+
+.login-form h2 {
+    margin-bottom: 30px;
+    color: #1a1a1a;
+    font-weight: 600;
+    /* Deixa o título mais forte */
+}
+
+.input-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555555;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    /* Borda mais clara */
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efeito de foco nos campos de entrada */
+.input-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    /* Remove o contorno padrão */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+}
